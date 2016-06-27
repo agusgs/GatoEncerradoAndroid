@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Gato Encerrado Android</string>
+    <string name="edit_message">Vacio papa</string>
+    <string name="button_send">Primer Boton</string>
+    <string name="title_activity_display_message">My Message</string>
+    <string name="holis_fragmemt">Holis fragmemt</string>
+    <string name="chauchis_fragment">Chauchiiis</string>
+
+    <string-array name="laberintos">
+        <item>Castillo</item>
+        <item>Casa</item>
+        <item>Pedo</item>
+        <item>Culo</item>
+    </string-array>
+</resources>
