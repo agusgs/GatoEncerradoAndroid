@@ -32,48 +32,52 @@ public class LaberintoDetalleFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        DetalleLaberinto detalleLaberinto = getDetalleLaberinto();
+        getDetalleLaberinto();
 
+    }
+
+    public void getDetalleLaberinto() {
+        LaberintosService service = LaberintosServiceBuilder.buildService();
+
+        System.out.println("Laberinto id ----> " + this.laberintoId );
+        Callback<DetalleLaberinto> callback = new Callback<DetalleLaberinto>() {
+            @Override
+            public void success(DetalleLaberinto detalleLaberintoRecibido, Response response) {
+                System.out.println("exito al traer detalle " + detalleLaberintoRecibido.getNombre());
+                mostrarDetalles(detalleLaberintoRecibido);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e("Error obtener detalle", error.getMessage());
+                System.out.println("Error obtener detalle" + error.getMessage());
+                error.printStackTrace();
+            }
+        };
+
+        service.getDetalleLaberinto(Usuario.USUARIO_CONOCIDO, this.laberintoId, callback);
+    }
+
+    public void setLaberintoId(String laberintoId) {
+        this.laberintoId = laberintoId;
+    }
+
+    public void mostrarDetalles(DetalleLaberinto detalleLaberinto){
         TextView laberintoNombre = new TextView(getActivity());
         laberintoNombre.setTextSize(40);
         laberintoNombre.setText(detalleLaberinto.getNombre());
 
-        TextView laberintoDetalle = new TextView(getActivity());
-        laberintoDetalle.setTextSize(40);
-        laberintoDetalle.setText(detalleLaberinto.getNombre());
+        TextView laberintoDescripcion = new TextView(getActivity());
+        laberintoDescripcion.setTextSize(40);
+        laberintoDescripcion.setText(detalleLaberinto.getDescripcion());
 
         ImageView laberintoImagen= new ImageView(getActivity());
         laberintoImagen.setImageResource(R.drawable.gato_encerrado);
 
         LinearLayout layout = (LinearLayout) getView();
         layout.addView(laberintoNombre);
-        layout.addView(laberintoDetalle);
+        layout.addView(laberintoDescripcion);
         layout.addView(laberintoImagen);
-
     }
 
-    public DetalleLaberinto getDetalleLaberinto() {
-        LaberintosService service = LaberintosServiceBuilder.buildService();
-        final ArrayList<DetalleLaberinto> detalleLaberinto = new ArrayList<DetalleLaberinto>();
-
-        service.getDetalleLaberinto(Usuario.USUARIO_CONOCIDO, this.laberintoId, new Callback<DetalleLaberinto>() {
-
-            @Override
-            public void success(DetalleLaberinto detalleLaberintoRecibido, Response response) {
-                detalleLaberinto.add(detalleLaberintoRecibido);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e("", error.getMessage());
-                error.printStackTrace();
-            }
-        });
-
-        return detalleLaberinto.get(0);
-    }
-
-    public void setLaberintoId(String laberintoId) {
-        this.laberintoId = laberintoId;
-    }
 }

@@ -62,22 +62,18 @@ public class LaberintosFragment extends ListFragment implements OnItemClickListe
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//        Toast.makeText(getActivity(), "Item seleccionado " + position, Toast.LENGTH_SHORT).show();
 
-        String laberintoId = "1";
+        Laberinto laberinto = (Laberinto) adapterView.getAdapter().getItem(position);
         LaberintoDetalleFragment detalleLaberinto = new LaberintoDetalleFragment();
-        detalleLaberinto.setLaberintoId(laberintoId);
+        detalleLaberinto.setLaberintoId(laberinto.getId());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            detalleLaberinto.setSharedElementEnterTransition(new DetailsTransition());
             detalleLaberinto.setEnterTransition(new Fade());
             setExitTransition(new Fade());
-//            detalleLaberinto.setSharedElementReturnTransition(new DetailsTransition());
         }
 
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-//                .addSharedElement(holder.image, "kittenImage")
                 .replace(R.id.container, detalleLaberinto)
                 .addToBackStack(null)
                 .commit();
