@@ -16,4 +16,7 @@ public interface LaberintosService {
             @Path("LaberintoId") String laberintoId,
             Callback<DetalleLaberinto> callback
     );
+
+    @GET("/inventario/{UsuarioId}")
+    void getInventario(@Path("UsuarioId") String usuarioConocido, Callback<List<Item>> callback);
 }

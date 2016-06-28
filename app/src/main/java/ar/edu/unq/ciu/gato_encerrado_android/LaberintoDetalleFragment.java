@@ -9,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
+import android.widget.Toast;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -39,18 +37,16 @@ public class LaberintoDetalleFragment extends Fragment{
     public void getDetalleLaberinto() {
         LaberintosService service = LaberintosServiceBuilder.buildService();
 
-        System.out.println("Laberinto id ----> " + this.laberintoId );
         Callback<DetalleLaberinto> callback = new Callback<DetalleLaberinto>() {
             @Override
             public void success(DetalleLaberinto detalleLaberintoRecibido, Response response) {
-                System.out.println("exito al traer detalle " + detalleLaberintoRecibido.getNombre());
                 mostrarDetalles(detalleLaberintoRecibido);
             }
 
             @Override
             public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("Error obtener detalle", error.getMessage());
-                System.out.println("Error obtener detalle" + error.getMessage());
                 error.printStackTrace();
             }
         };
@@ -72,7 +68,7 @@ public class LaberintoDetalleFragment extends Fragment{
         laberintoDescripcion.setText(detalleLaberinto.getDescripcion());
 
         ImageView laberintoImagen= new ImageView(getActivity());
-        laberintoImagen.setImageResource(R.drawable.gato_encerrado);
+        new CargarImagen(laberintoImagen).execute(detalleLaberinto.getPathImagen());
 
         LinearLayout layout = (LinearLayout) getView();
         layout.addView(laberintoNombre);

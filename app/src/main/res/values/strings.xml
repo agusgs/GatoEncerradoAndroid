@@ -5,6 +5,7 @@
     <string name="title_activity_display_message">My Message</string>
     <string name="holis_fragmemt">Holis fragmemt</string>
     <string name="chauchis_fragment">Chauchiiis</string>
+    <string name="gestionar_inventario">Gestionar Inventario</string>
 
     <string-array name="laberintos">
         <item>Castillo</item>

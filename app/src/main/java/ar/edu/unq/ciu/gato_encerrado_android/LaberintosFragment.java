@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,25 +28,28 @@ public class LaberintosFragment extends ListFragment implements OnItemClickListe
         return inflater.inflate(R.layout.laberintos_fragment, container, false);
     }
 
-    private ArrayList<Laberinto> getLaberintos() {
-        final ArrayList<Laberinto> laberintos = new ArrayList<Laberinto>();
+    private void getLaberintos() {
 
         LaberintosService laberintosService = createLaberintosService();
         laberintosService.getLaberintos(Usuario.USUARIO_CONOCIDO, new Callback<List<Laberinto>>() {
 
             @Override
             public void success(List<Laberinto> laberintosRecibidos, Response response) {
-                laberintos.addAll(laberintosRecibidos);
+                mostrarLaberintos(laberintosRecibidos);
             }
 
             @Override
             public void failure(RetrofitError error) {
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("", error.getMessage());
                 error.printStackTrace();
             }
         });
+    }
 
-        return laberintos;
+    private void mostrarLaberintos(List<Laberinto> laberintosRecibidos) {
+        setListAdapter(new LaberintosAdapter(getActivity(), laberintosRecibidos));
+        getListView().setOnItemClickListener(this);
     }
 
     private LaberintosService createLaberintosService() {
@@ -55,9 +59,7 @@ public class LaberintosFragment extends ListFragment implements OnItemClickListe
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-
-        setListAdapter(new LaberintosAdapter(getActivity(), getLaberintos()));
-        getListView().setOnItemClickListener(this);
+        getLaberintos();
     }
 
     @Override
